@@ -482,7 +482,7 @@ class CausalLM(Model):
         revision: Optional[str] = None,
         quantize: Optional[str] = None,
         dtype: Optional[torch.dtype] = None,
-        trust_remote_code: bool = False,
+        trust_remote_code: bool = True,
     ):
         if torch.cuda.is_available():
             device = torch.device("cuda")
@@ -499,7 +499,7 @@ class CausalLM(Model):
             revision=revision,
             padding_side="left",
             truncation_side="left",
-            trust_remote_code=trust_remote_code,
+            trust_remote_code=True,
         )
         model = AutoModelForCausalLM.from_pretrained(
             model_id,
@@ -509,7 +509,7 @@ class CausalLM(Model):
             if torch.cuda.is_available() and torch.cuda.device_count() > 1
             else None,
             load_in_8bit=quantize == "bitsandbytes",
-            trust_remote_code=trust_remote_code,
+            trust_remote_code=True,
         )
         if torch.cuda.is_available() and torch.cuda.device_count() == 1 and quantize != "bitsandbytes":
             model = model.cuda()

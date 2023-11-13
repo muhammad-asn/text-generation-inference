@@ -44,7 +44,7 @@ class MPTSharded(CausalLM):
         revision: Optional[str] = None,
         quantize: Optional[str] = None,
         dtype: Optional[torch.dtype] = None,
-        trust_remote_code: bool = False,
+        trust_remote_code: bool = True,
     ):
         self.process_group, rank, world_size = initialize_torch_distributed()
         if torch.cuda.is_available():
@@ -59,7 +59,7 @@ class MPTSharded(CausalLM):
             revision=revision,
             padding_side="left",
             truncation_side="left",
-            trust_remote_code=trust_remote_code,
+            trust_remote_code=True,
         )
         tokenizer.pad_token = tokenizer.eos_token
 

@@ -756,10 +756,10 @@ class MPTModel(MPTPreTrainedModel):
 
         self.wte = TensorParallelEmbedding("transformer.wte", weights)
         if not self.alibi:
-            # self.wpe = torch.nn.Embedding(
-            #     config.max_seq_len, config.d_model, device=config.init_device
-            # )
-            raise RuntimeError("no alibi no supported")
+            self.wpe = torch.nn.Embedding(
+                config.max_seq_len, config.d_model, device=config.init_device
+            )
+            # raise RuntimeError("no alibi no supported")
         self.blocks = nn.ModuleList(
             [
                 MPTBlock(config, prefix=f"transformer.blocks.{i}", weights=weights)
